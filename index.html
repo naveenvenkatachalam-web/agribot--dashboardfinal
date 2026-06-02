@@ -189,6 +189,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
 #fs-modal.open{display:flex}
 .fs-topbar{height:38px;background:rgba(6,10,6,.97);border-bottom:1px solid var(--border2);display:flex;align-items:center;padding:0 14px;gap:10px;flex-shrink:0}
 .fs-close{margin-left:auto;background:rgba(255,23,68,.1);border:1px solid rgba(255,23,68,.35);border-radius:4px;color:var(--red);font-family:var(--mono);font-size:10px;padding:4px 14px;cursor:pointer;letter-spacing:.08em;display:flex;align-items:center;gap:6px}
+.fs-body{flex:1;display:flex;min-height:0;overflow:hidden}
 .fs-stream{flex:1;display:flex;align-items:center;justify-content:center;background:#000;position:relative;overflow:hidden}
 .fs-stream img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:none}
 .fs-ph{display:flex;flex-direction:column;align-items:center;gap:12px;color:var(--text3);font-family:var(--mono);font-size:11px}
@@ -197,6 +198,61 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
 .fs-corner.tr{top:12px;right:12px;border-width:1px 1px 0 0}
 .fs-corner.bl{bottom:12px;left:12px;border-width:0 0 1px 1px}
 .fs-corner.br{bottom:12px;right:12px;border-width:0 1px 1px 0}
+
+/* ── AI VISION PANEL (fullscreen only) ── */
+#ai-panel{width:300px;flex-shrink:0;background:rgba(4,8,4,.98);border-left:1px solid var(--border2);display:flex;flex-direction:column;overflow:hidden}
+.aip-hdr{padding:9px 12px 7px;border-bottom:1px solid var(--border2);flex-shrink:0}
+.aip-title{font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.aip-title::before{content:'';display:block;width:2px;height:13px;background:var(--g);border-radius:1px;box-shadow:0 0 8px var(--g)}
+.ai-glow{font-family:var(--mono);font-size:17px;font-weight:700;letter-spacing:.14em;color:var(--g);text-shadow:0 0 10px var(--g),0 0 24px rgba(0,230,118,.5),0 0 48px rgba(0,230,118,.2);animation:aiGlow 2.6s ease-in-out infinite}
+@keyframes aiGlow{0%,100%{text-shadow:0 0 8px var(--g),0 0 20px rgba(0,230,118,.4),0 0 42px rgba(0,230,118,.15)}50%{text-shadow:0 0 18px var(--g),0 0 40px rgba(0,230,118,.75),0 0 72px rgba(0,230,118,.35)}}
+.aip-badge{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:8px;letter-spacing:.09em;padding:2px 8px;border-radius:3px;border:1px solid var(--g3);background:var(--g4);color:var(--g);transition:all .3s}
+.aip-badge.scanning{border-color:#003050;background:#001828;color:var(--blue);animation:blink 1s step-end infinite}
+.aip-badge.analyzing{border-color:#4a3000;background:#1a0c00;color:var(--amber)}
+.aip-badge.found{box-shadow:0 0 10px rgba(0,230,118,.3)}
+.aip-badge.notfound{border-color:#4a0a0a;background:#1a0505;color:var(--red)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* upload zone */
+.aip-upload{margin:9px 12px;border:1px dashed var(--border2);border-radius:5px;padding:11px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;position:relative;transition:border-color .2s,background .2s;flex-shrink:0}
+.aip-upload:hover{border-color:var(--g);background:rgba(0,230,118,.03)}
+.aip-upload input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.aip-upload-lbl{font-family:var(--mono);font-size:8px;color:var(--text3);letter-spacing:.09em;text-align:center;pointer-events:none}
+.aip-thumb{width:100%;max-height:72px;object-fit:cover;border-radius:3px;border:1px solid var(--border2);display:none;pointer-events:none}
+.aip-fname{font-family:var(--mono);font-size:8px;color:var(--g);letter-spacing:.05em;display:none;text-align:center;word-break:break-all;pointer-events:none}
+
+/* confidence */
+.aip-conf{padding:0 12px;flex-shrink:0}
+.aip-conf-lbl{font-family:var(--mono);font-size:8px;color:var(--text3);letter-spacing:.07em;display:flex;justify-content:space-between;margin-bottom:3px}
+.aip-conf-bar{height:4px;background:var(--bg3);border-radius:2px;overflow:hidden}
+.aip-conf-fill{height:100%;border-radius:2px;background:var(--g);width:0%;transition:width .7s cubic-bezier(.4,0,.2,1),background .4s}
+
+/* decision log */
+.aip-log-wrap{flex:1;display:flex;flex-direction:column;padding:7px 12px;min-height:0}
+.aip-log-lbl{font-family:var(--mono);font-size:8px;color:var(--text3);letter-spacing:.1em;margin-bottom:4px;display:flex;align-items:center;gap:5px}
+.aip-log-lbl::before{content:'';display:block;width:8px;height:1px;background:var(--border2)}
+.aip-log{flex:1;background:var(--bg1);border:1px solid var(--border2);border-radius:4px;padding:7px 9px;overflow-y:auto;scrollbar-width:none;min-height:0}
+.aip-log::-webkit-scrollbar{display:none}
+.aip-line{font-family:var(--mono);font-size:9px;line-height:1.6;display:flex;gap:7px}
+.aip-line .t{color:var(--text3);opacity:.45;flex-shrink:0}
+.aip-line .m{color:var(--text2)}
+.aip-line.lg .m{color:var(--g);text-shadow:0 0 8px rgba(0,230,118,.5)}
+.aip-line.la .m{color:var(--amber)}
+.aip-line.lr .m{color:var(--red)}
+.aip-line.lc .m{color:var(--cyan)}
+.aip-line.lb .m{color:var(--blue)}
+
+/* action strip */
+.aip-actions{padding:8px 12px;border-top:1px solid var(--border2);flex-shrink:0;display:flex;flex-direction:column;gap:5px}
+.aip-scan-btn{width:100%;padding:8px;background:var(--g4);border:1px solid var(--g3);border-radius:4px;color:var(--g);font-family:var(--mono);font-size:10px;letter-spacing:.13em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .2s;box-shadow:0 0 10px rgba(0,230,118,.1)}
+.aip-scan-btn:hover:not(:disabled){background:#0c2a0c;box-shadow:0 0 20px rgba(0,230,118,.3)}
+.aip-scan-btn:disabled{opacity:.38;cursor:not-allowed}
+.aip-scan-btn.scanning{border-color:var(--blue);color:var(--blue);background:#001828;animation:blink 1s step-end infinite}
+.aip-cmd-row{display:flex;gap:4px}
+.aip-cmd-btn{flex:1;padding:5px 3px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;font-family:var(--mono);font-size:8px;letter-spacing:.05em;cursor:pointer;color:var(--text3);transition:all .15s}
+.aip-cmd-btn.cg{color:var(--g);border-color:var(--g3);background:var(--g4)}
+.aip-cmd-btn.ca{color:var(--amber);border-color:#4a3000;background:#1a0c00}
+.aip-cmd-btn.cr{color:var(--red);border-color:#4a0a0a;background:#1a0505}
 
 #radar{display:block;width:100%}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
@@ -561,21 +617,82 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
     <span style="font-family:var(--mono);font-size:10px;color:var(--red);letter-spacing:.1em">LIVE</span>
     <span style="font-family:var(--mono);font-size:10px;color:var(--text3)">AgriBot Camera —</span>
     <span style="font-family:var(--mono);font-size:10px;color:var(--g)" id="fs-url-lbl">--</span>
+    <!-- AI status in topbar -->
+    <span style="margin-left:14px;display:flex;align-items:center;gap:7px">
+      <span style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:.1em">AI VISION</span>
+      <span class="aip-badge" id="aip-badge-top">IDLE</span>
+    </span>
     <button class="fs-close" onclick="closeFsCam()">
       <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="1" y1="1" x2="11" y2="11"/><line x1="11" y1="1" x2="1" y2="11"/></svg>
       CLOSE
     </button>
   </div>
-  <div class="fs-stream">
-    <img id="fs-img" alt="stream"/>
-    <div class="fs-ph" id="fs-ph">
-      <svg width="44" height="38" viewBox="0 0 32 28" fill="none"><rect x="1" y="5" width="30" height="22" rx="3" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M11 5l2-4h6l2 4" stroke="currentColor" stroke-width="1.2"/></svg>
-      <span>Connecting to stream…</span>
-      <span id="fs-ph-url" style="color:var(--g);font-size:9px"></span>
+  <div class="fs-body">
+    <!-- Camera stream (left) -->
+    <div class="fs-stream">
+      <img id="fs-img" alt="stream"/>
+      <div class="fs-ph" id="fs-ph">
+        <svg width="44" height="38" viewBox="0 0 32 28" fill="none"><rect x="1" y="5" width="30" height="22" rx="3" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M11 5l2-4h6l2 4" stroke="currentColor" stroke-width="1.2"/></svg>
+        <span>Connecting to stream…</span>
+        <span id="fs-ph-url" style="color:var(--g);font-size:9px"></span>
+      </div>
+      <div class="fs-corner tl"></div><div class="fs-corner tr"></div>
+      <div class="fs-corner bl"></div><div class="fs-corner br"></div>
+      <!-- AI overlay on camera when plant found -->
+      <div id="ai-cam-overlay" style="display:none;position:absolute;top:10px;left:10px;background:rgba(0,0,0,.72);border:1px solid var(--g);border-radius:5px;padding:7px 12px;font-family:var(--mono)">
+        <div style="font-size:8px;color:var(--text3);letter-spacing:.12em;margin-bottom:3px">PLANT DETECTED</div>
+        <div class="ai-glow" id="ai-plant-label" style="font-size:14px">--</div>
+        <div style="font-size:8px;color:var(--text3);margin-top:3px">CONFIDENCE: <span id="ai-conf-pct" style="color:var(--g)">--%</span></div>
+      </div>
     </div>
-    <div class="fs-corner tl"></div><div class="fs-corner tr"></div>
-    <div class="fs-corner bl"></div><div class="fs-corner br"></div>
-  </div>
+    <!-- AI Vision Panel (right) -->
+    <div id="ai-panel">
+      <!-- Header -->
+      <div class="aip-hdr">
+        <div class="aip-title">AI Plant Vision</div>
+        <div class="ai-glow">AGRIBOT·AI</div>
+        <div style="margin-top:5px;display:flex;align-items:center;gap:7px">
+          <span class="aip-badge" id="aip-badge">IDLE</span>
+          <span style="font-family:var(--mono);font-size:8px;color:var(--text3)" id="aip-status-txt">Upload a reference image</span>
+        </div>
+      </div>
+
+      <!-- Upload zone -->
+      <div class="aip-upload" id="aip-upload-zone">
+        <input type="file" id="aip-file-input" accept="image/*" onchange="aiHandleFile(this)"/>
+        <svg width="22" height="20" viewBox="0 0 24 22" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><rect x="1" y="5" width="22" height="16" rx="2"/><path d="M8 5l1.5-3h5L16 5"/><circle cx="12" cy="13" r="3.5"/></svg>
+        <div class="aip-upload-lbl">UPLOAD REFERENCE PLANT IMAGE<br/><span style="color:var(--text3);font-size:7px">(click or drag — JPG / PNG)</span></div>
+        <img class="aip-thumb" id="aip-thumb"/>
+        <div class="aip-fname" id="aip-fname"></div>
+      </div>
+
+      <!-- Confidence bar -->
+      <div class="aip-conf" style="margin-bottom:8px">
+        <div class="aip-conf-lbl"><span>MATCH CONFIDENCE</span><span id="aip-conf-num" style="color:var(--g)">0%</span></div>
+        <div class="aip-conf-bar"><div class="aip-conf-fill" id="aip-conf-fill"></div></div>
+      </div>
+
+      <!-- Decision log -->
+      <div class="aip-log-wrap">
+        <div class="aip-log-lbl">AI DECISION LOG</div>
+        <div class="aip-log" id="aip-log"></div>
+      </div>
+
+      <!-- Action strip -->
+      <div class="aip-actions">
+        <button class="aip-scan-btn" id="aip-scan-btn" onclick="aiScan()" disabled>
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="8" cy="8" r="6"/><circle cx="8" cy="8" r="2.5"/><line x1="8" y1="1" x2="8" y2="4"/><line x1="8" y1="12" x2="8" y2="15"/><line x1="1" y1="8" x2="4" y2="8"/><line x1="12" y1="8" x2="15" y2="8"/></svg>
+          SCAN &amp; IDENTIFY PLANT
+        </button>
+        <div class="aip-cmd-row">
+          <button class="aip-cmd-btn cg" onclick="aiExecCmd('pump','true')">💧 PUMP ON</button>
+          <button class="aip-cmd-btn ca" onclick="aiExecCmd('actuator','UP')">▲ LIFT</button>
+          <button class="aip-cmd-btn cr" onclick="aiExecCmd('pump','false')">✕ PUMP OFF</button>
+        </div>
+        <div style="font-family:var(--mono);font-size:7px;color:var(--text3);text-align:center;letter-spacing:.07em">COMMANDS SENT TO ESP32 VIA FIREBASE</div>
+      </div>
+    </div><!-- /ai-panel -->
+  </div><!-- /fs-body -->
 </div>
 
 </div><!-- /app -->
@@ -902,6 +1019,205 @@ slog('AgriBot Dashboard v3.0 — Firebase Edition','g');
 slog('Project: smart-agri-bot-89ea1 · Region: asia-southeast1','g');
 slog('Listening on /agribot/data … waiting for ESP32-S3-CAM','a');
 slog('Fields: moisture · distance · leftDistance · centerDistance · rightDistance · servoAngle · pump · actuator · movement · wateringNeeded · mode · ip','c');
+
+/* ══════════════════════════════════════════════
+   AI VISION — plant reference + camera scan
+   ══════════════════════════════════════════════ */
+let aiRefImageB64=null;   // base64 of user-uploaded reference image
+let aiRefFileName='';
+let aiScanning=false;
+
+function aipLog(msg,type=''){
+  const log=document.getElementById('aip-log');
+  if(!log)return;
+  const d=document.createElement('div');
+  d.className='aip-line'+(type?' l'+type:'');
+  const now=new Date().toLocaleTimeString('en',{hour12:false});
+  d.innerHTML=`<span class="t">[${now}]</span><span class="m">${msg}</span>`;
+  log.appendChild(d);
+  if(log.children.length>200)log.removeChild(log.firstChild);
+  log.scrollTop=log.scrollHeight;
+}
+
+function aipSetBadge(state,label){
+  ['aip-badge','aip-badge-top'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    el.className='aip-badge '+state;
+    el.textContent=label;
+  });
+}
+
+function aipSetStatus(txt){
+  const el=document.getElementById('aip-status-txt');
+  if(el)el.textContent=txt;
+}
+
+function aipSetConf(pct){
+  const col=pct>=75?'var(--g)':pct>=45?'var(--amber)':'var(--red)';
+  const fill=document.getElementById('aip-conf-fill');
+  const num=document.getElementById('aip-conf-num');
+  const pct2=document.getElementById('ai-conf-pct');
+  if(fill){fill.style.width=pct+'%';fill.style.background=col;}
+  if(num){num.textContent=pct+'%';num.style.color=col;}
+  if(pct2){pct2.textContent=pct+'%';pct2.style.color=col;}
+}
+
+/* Handle reference file upload */
+function aiHandleFile(input){
+  const file=input.files[0];
+  if(!file)return;
+  aiRefFileName=file.name;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const dataUrl=e.target.result;
+    aiRefImageB64=dataUrl.split(',')[1]; // pure base64
+    // show thumb
+    const thumb=document.getElementById('aip-thumb');
+    const fname=document.getElementById('aip-fname');
+    if(thumb){thumb.src=dataUrl;thumb.style.display='block';}
+    if(fname){fname.textContent=file.name;fname.style.display='block';}
+    // enable scan button
+    const btn=document.getElementById('aip-scan-btn');
+    if(btn)btn.disabled=false;
+    aipSetBadge('analyzing','READY');
+    aipSetStatus('Reference loaded — press SCAN');
+    aipLog('Reference loaded: '+file.name,'c');
+    aipLog('Upload plant to match against live cam feed','');
+    aipSetConf(0);
+    document.getElementById('ai-cam-overlay').style.display='none';
+  };
+  reader.readAsDataURL(file);
+}
+
+/* Capture a frame from the live ESP32-S3-CAM stream */
+async function aiCaptureFrame(){
+  // Draw the live stream img to a canvas to get base64
+  const img=document.getElementById('fs-img');
+  if(!img||img.style.display==='none'||!img.src||img.src===''){
+    // No live stream — try fetching a snapshot from ESP32
+    if(!espIP)throw new Error('No camera stream and no ESP32 IP');
+    const url='http://'+espIP+'/capture?t='+Date.now();
+    const resp=await fetch(url,{mode:'cors'});
+    const blob=await resp.blob();
+    return new Promise((res,rej)=>{
+      const r=new FileReader();
+      r.onload=()=>res(r.result.split(',')[1]);
+      r.onerror=rej;
+      r.readAsDataURL(blob);
+    });
+  }
+  // Draw stream frame to canvas
+  const canvas=document.createElement('canvas');
+  canvas.width=img.naturalWidth||640;
+  canvas.height=img.naturalHeight||480;
+  const ctx=canvas.getContext('2d');
+  ctx.drawImage(img,0,0,canvas.width,canvas.height);
+  return canvas.toDataURL('image/jpeg',.85).split(',')[1];
+}
+
+/* Main AI scan function — calls Claude API */
+async function aiScan(){
+  if(aiScanning||!aiRefImageB64)return;
+  aiScanning=true;
+  const btn=document.getElementById('aip-scan-btn');
+  if(btn){btn.disabled=true;btn.classList.add('scanning');}
+  aipSetBadge('scanning','SCANNING');
+  aipSetStatus('Capturing camera frame…');
+  aipLog('▶ AI scan started','b');
+  aipSetConf(0);
+  document.getElementById('ai-cam-overlay').style.display='none';
+
+  let cameraB64=null;
+  try{
+    aipLog('Capturing frame from ESP32-S3-CAM…','');
+    cameraB64=await aiCaptureFrame();
+    aipLog('Frame captured — sending to AI…','c');
+  }catch(err){
+    aipLog('Camera capture failed: '+err.message+' — using reference only','a');
+    // Fall through: we'll ask AI to analyse reference only
+  }
+
+  aipSetBadge('analyzing','ANALYZING');
+  aipSetStatus('AI analysing…');
+
+  // Build message content
+  const content=[];
+  content.push({type:'text',text:'You are an agricultural AI for an ESP32-S3-CAM robot called AgriBot.\n\nYou are given a REFERENCE IMAGE of a specific plant the user wants the robot to find and operate on.\n'+(cameraB64?'You are also given the LIVE CAMERA FRAME captured by the robot.\n\nTask:\n1. Identify the plant species in the reference image.\n2. Check if the SAME plant (or a plant of the same species) is visible in the live camera frame.\n3. Give a confidence score 0-100 for the match.\n4. If confidence >= 60, decide what AgriBot should do: move toward the plant, activate the pump to water it, or lift the actuator.\n5. If confidence < 60, state that the plant was NOT found and suggest the robot should keep scanning.\n\nRespond ONLY in this exact JSON format (no markdown, no extra text):\n{"plant_name":"<name>","confidence":<0-100>,"found":<true|false>,"reason":"<short reason>","decision":"<one of: WATER_NOW | NAVIGATE_CLOSER | LIFT_ACTUATOR | KEEP_SCANNING>","action_pump":<true|false>,"action_actuator":"<UP|STOP>","action_move":"<FWD|STOP>","message":"<one sentence for the operator>"}':'You are also given ONLY the reference image (no live camera frame is available yet).\n\nTask:\n1. Identify the plant species in the reference image.\n2. State that no live frame is available so the robot should start scanning.\n3. Give guidance on what to look for.\n\nRespond ONLY in this exact JSON format (no markdown, no extra text):\n{"plant_name":"<name>","confidence":0,"found":false,"reason":"No live frame","decision":"KEEP_SCANNING","action_pump":false,"action_actuator":"STOP","action_move":"STOP","message":"<describe the plant so operator knows what to find>"}')});
+  // Reference image
+  content.push({type:'image',source:{type:'base64',media_type:'image/jpeg',data:aiRefImageB64}});
+  if(cameraB64){
+    content.push({type:'text',text:'--- LIVE CAMERA FRAME below ---'});
+    content.push({type:'image',source:{type:'base64',media_type:'image/jpeg',data:cameraB64}});
+  }
+
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        messages:[{role:'user',content}]
+      })
+    });
+    const data=await resp.json();
+    const raw=data.content.map(i=>i.text||'').join('').replace(/```json|```/g,'').trim();
+    let result;
+    try{result=JSON.parse(raw);}catch(e){throw new Error('AI parse error: '+raw.slice(0,120));}
+    aiHandleResult(result);
+  }catch(err){
+    aipLog('AI error: '+err.message,'r');
+    aipSetBadge('notfound','ERROR');
+    aipSetStatus('AI request failed');
+  }finally{
+    aiScanning=false;
+    if(btn){btn.disabled=false;btn.classList.remove('scanning');}
+  }
+}
+
+function aiHandleResult(r){
+  const conf=Math.max(0,Math.min(100,r.confidence||0));
+  aipSetConf(conf);
+
+  if(r.found){
+    aipSetBadge('found','PLANT FOUND');
+    aipSetStatus(r.plant_name);
+    // show overlay on camera
+    const overlay=document.getElementById('ai-cam-overlay');
+    const lbl=document.getElementById('ai-plant-label');
+    if(overlay){overlay.style.display='block';}
+    if(lbl){lbl.textContent=r.plant_name.toUpperCase();}
+    aipLog('✔ PLANT IDENTIFIED: '+r.plant_name,'g');
+    aipLog('Confidence: '+conf+'%','g');
+    aipLog('Reason: '+r.reason,'');
+    aipLog('Decision: '+r.decision,'c');
+    aipLog(r.message,'g');
+    // Execute AI decision via Firebase
+    aipLog('Executing AI commands on ESP32…','a');
+    if(r.action_pump!==undefined) sendCmd('pump',String(r.action_pump));
+    if(r.action_actuator&&r.action_actuator!=='STOP') sendCmd('actuator',r.action_actuator);
+    if(r.action_move&&r.action_move!=='STOP') driveCmd(r.action_move);
+    aipLog('pump='+r.action_pump+' actuator='+r.action_actuator+' move='+r.action_move,'a');
+    slog('[AI] Plant found: '+r.plant_name+' ('+conf+'%) → '+r.decision,'g');
+  }else{
+    aipSetBadge('notfound','NOT FOUND');
+    aipSetStatus('Plant not detected');
+    document.getElementById('ai-cam-overlay').style.display='none';
+    aipLog('✘ Plant NOT found in camera frame','r');
+    aipLog('Confidence: '+conf+'%','r');
+    aipLog('Reason: '+r.reason,'');
+    aipLog('Decision: KEEP SCANNING','a');
+    aipLog(r.message,'');
+    slog('[AI] Plant not found ('+conf+'%) — '+r.decision,'a');
+  }
+}
+
+/* Manual command buttons in AI panel */
+function aiExecCmd(cmd,val){
+  sendCmd(cmd,val);
+  aipLog('Manual AI cmd → '+cmd+'='+val,'a');
+}
 </script>
 </body>
 </html>

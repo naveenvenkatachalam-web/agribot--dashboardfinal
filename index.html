@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -164,16 +165,14 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
 .cam-run-btn{width:100%;padding:9px 0;background:var(--g4);border:1px solid var(--g3);border-radius:5px;color:var(--g);font-family:var(--mono);font-size:11px;letter-spacing:.14em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s,box-shadow .2s;box-shadow:0 0 10px rgba(0,230,118,.12)}
 .cam-run-btn:hover{background:#0d2d0d;box-shadow:0 0 20px rgba(0,230,118,.32)}
 
-/* ══ FULLSCREEN MODAL — REDESIGNED ══ */
+/* ══ FULLSCREEN MODAL ══ */
 #fs-modal{display:none;position:fixed;inset:0;z-index:99999;flex-direction:column;background:#000}
 #fs-modal.open{display:flex}
 .fs-topbar{height:38px;background:rgba(6,10,6,.97);border-bottom:1px solid var(--border2);display:flex;align-items:center;padding:0 14px;gap:10px;flex-shrink:0}
 .fs-close{margin-left:auto;background:rgba(255,23,68,.1);border:1px solid rgba(255,23,68,.35);border-radius:4px;color:var(--red);font-family:var(--mono);font-size:10px;padding:4px 14px;cursor:pointer;letter-spacing:.08em;display:flex;align-items:center;gap:6px}
 
-/* fs-body: stream takes max space, panel is narrower */
 .fs-body{flex:1;display:flex;min-height:0;overflow:hidden}
 
-/* Camera stream — fills all remaining width */
 .fs-stream{flex:1;display:flex;align-items:stretch;justify-content:center;background:#000;position:relative;overflow:hidden}
 .fs-stream img{width:100%;height:100%;object-fit:contain;display:none}
 .fs-ph{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:var(--text3);font-family:var(--mono);font-size:11px;width:100%}
@@ -183,13 +182,11 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
 .fs-corner.bl{bottom:12px;left:12px;border-width:0 0 1px 1px}
 .fs-corner.br{bottom:12px;right:12px;border-width:0 1px 1px 0}
 
-/* skeleton canvas — overlays the stream exactly */
 #skel-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:10}
 
-/* AI cam overlay */
 #ai-cam-overlay{display:none;position:absolute;top:10px;left:10px;background:rgba(0,0,0,.72);border:1px solid var(--g);border-radius:5px;padding:7px 12px;font-family:var(--mono);z-index:20}
 
-/* ══ AI PANEL — narrower, reorganised ══ */
+/* ══ AI PANEL ══ */
 #ai-panel{width:280px;flex-shrink:0;background:rgba(4,8,4,.98);border-left:1px solid var(--border2);display:flex;flex-direction:column;overflow:hidden}
 
 .aip-hdr{padding:7px 10px 5px;border-bottom:1px solid var(--border2);flex-shrink:0}
@@ -204,7 +201,11 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
 .aip-badge.notfound{border-color:#4a0a0a;background:#1a0505;color:var(--red)}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
 
-/* ══ REF IMAGES — two slots side by side, fully shown ══ */
+/* auto-scan indicator */
+.aip-autoscan{display:flex;align-items:center;gap:6px;padding:3px 10px;background:#001020;border-bottom:1px solid #003050;font-family:var(--mono);font-size:8px;color:var(--blue);letter-spacing:.08em;flex-shrink:0}
+.aip-autoscan.hidden{display:none}
+.aip-autoscan-dot{width:5px;height:5px;border-radius:50%;background:var(--blue);animation:pulse 1s infinite}
+
 .aip-refs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:6px 10px;flex-shrink:0;border-bottom:1px solid var(--border2)}
 .aip-ref-slot{display:flex;flex-direction:column;gap:3px}
 .aip-ref-lbl{font-family:var(--mono);font-size:7px;color:var(--text3);letter-spacing:.09em;text-align:center}
@@ -215,25 +216,21 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
 .aip-ref-ph{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text3);font-family:var(--mono);font-size:7px;pointer-events:none}
 .aip-ref-name{font-family:var(--mono);font-size:7px;color:var(--g);text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 4px}
 
-/* snapshot button */
 .aip-snap-btn{width:100%;padding:4px 0;background:#001828;border:1px solid #003050;border-radius:4px;color:var(--blue);font-family:var(--mono);font-size:8px;letter-spacing:.1em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:all .15s}
 .aip-snap-btn:hover{background:#002035;border-color:var(--blue)}
 .aip-snap-btn:disabled{opacity:.35;cursor:not-allowed}
 
-/* confidence */
 .aip-conf{padding:4px 10px;flex-shrink:0}
 .aip-conf-lbl{font-family:var(--mono);font-size:8px;color:var(--text3);letter-spacing:.07em;display:flex;justify-content:space-between;margin-bottom:2px}
 .aip-conf-bar{height:3px;background:var(--bg3);border-radius:2px;overflow:hidden}
 .aip-conf-fill{height:100%;border-radius:2px;background:var(--g);width:0%;transition:width .7s cubic-bezier(.4,0,.2,1),background .4s}
 
-/* skeleton toggle */
 .aip-skel-row{padding:3px 10px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border2)}
 .aip-skel-lbl{font-family:var(--mono);font-size:8px;color:var(--text3);letter-spacing:.08em}
 .skel-toggle{display:flex;gap:2px}
 .skel-btn{padding:2px 8px;font-family:var(--mono);font-size:8px;border:1px solid var(--border2);border-radius:3px;cursor:pointer;color:var(--text3);background:var(--bg3);transition:all .15s}
 .skel-btn.active{background:var(--g4);border-color:var(--g3);color:var(--g)}
 
-/* decision log — compact */
 .aip-log-wrap{flex:1;display:flex;flex-direction:column;padding:4px 10px;min-height:0;overflow:hidden}
 .aip-log-lbl{font-family:var(--mono);font-size:7px;color:var(--text3);letter-spacing:.1em;margin-bottom:3px;display:flex;align-items:center;gap:5px;flex-shrink:0}
 .aip-log-lbl::before{content:'';display:block;width:8px;height:1px;background:var(--border2)}
@@ -249,17 +246,12 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
 .aip-line.lc .m{color:var(--cyan)}
 .aip-line.lb .m{color:var(--blue)}
 
-/* action strip */
+/* action strip — scan button only, no pump/lift/off buttons */
 .aip-actions{padding:6px 10px;border-top:1px solid var(--border2);flex-shrink:0;display:flex;flex-direction:column;gap:4px}
 .aip-scan-btn{width:100%;padding:7px;background:var(--g4);border:1px solid var(--g3);border-radius:4px;color:var(--g);font-family:var(--mono);font-size:9px;letter-spacing:.13em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .2s}
 .aip-scan-btn:hover:not(:disabled){background:#0c2a0c}
 .aip-scan-btn:disabled{opacity:.38;cursor:not-allowed}
 .aip-scan-btn.scanning{border-color:var(--blue);color:var(--blue);background:#001828;animation:blink 1s step-end infinite}
-.aip-cmd-row{display:flex;gap:3px}
-.aip-cmd-btn{flex:1;padding:4px 2px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;font-family:var(--mono);font-size:7px;letter-spacing:.05em;cursor:pointer;color:var(--text3);transition:all .15s}
-.aip-cmd-btn.cg{color:var(--g);border-color:var(--g3);background:var(--g4)}
-.aip-cmd-btn.ca{color:var(--amber);border-color:#4a3000;background:#1a0c00}
-.aip-cmd-btn.cr{color:var(--red);border-color:#4a0a0a;background:#1a0505}
 
 #radar{display:block;width:100%}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
@@ -305,7 +297,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
         <span>Waiting for stream</span>
         <span style="color:var(--g);font-size:9px" id="cam-url-lbl"></span>
       </div>
-      <img id="cam-img" alt="stream"/>
+      <img id="cam-img" alt="stream" crossorigin="anonymous"/>
     </div>
     <div style="display:flex;justify-content:space-between;margin-top:4px;font-family:var(--mono);font-size:9px;color:var(--text3)">
       <span>OV3660 · MJPEG · SVGA</span>
@@ -597,7 +589,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
       <span style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:.1em">AI VISION</span>
       <span class="aip-badge" id="aip-badge-top">IDLE</span>
     </span>
-    <!-- skeleton toggle in topbar -->
     <span style="margin-left:10px;display:flex;align-items:center;gap:6px">
       <span style="font-family:var(--mono);font-size:9px;color:var(--text3)">SKELETON</span>
       <button id="skel-top-btn" onclick="toggleSkeleton()" style="background:var(--g4);border:1px solid var(--g3);border-radius:3px;color:var(--g);font-family:var(--mono);font-size:8px;padding:2px 8px;cursor:pointer;letter-spacing:.06em">ON</button>
@@ -608,10 +599,8 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
     </button>
   </div>
   <div class="fs-body">
-    <!-- Camera stream — full width minus panel -->
     <div class="fs-stream">
-      <img id="fs-img" alt="stream"/>
-      <!-- plant skeleton canvas overlay -->
+      <img id="fs-img" alt="stream" crossorigin="anonymous"/>
       <canvas id="skel-canvas"></canvas>
       <div class="fs-ph" id="fs-ph">
         <svg width="44" height="38" viewBox="0 0 32 28" fill="none"><rect x="1" y="5" width="30" height="22" rx="3" stroke="currentColor" stroke-width="1.2"/><circle cx="16" cy="16" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M11 5l2-4h6l2 4" stroke="currentColor" stroke-width="1.2"/></svg>
@@ -620,7 +609,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
       </div>
       <div class="fs-corner tl"></div><div class="fs-corner tr"></div>
       <div class="fs-corner bl"></div><div class="fs-corner br"></div>
-      <!-- AI overlay -->
       <div id="ai-cam-overlay">
         <div style="font-size:8px;color:var(--text3);letter-spacing:.12em;margin-bottom:3px">PLANT DETECTED</div>
         <div class="ai-glow" id="ai-plant-label" style="font-size:14px">--</div>
@@ -628,7 +616,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
       </div>
     </div>
 
-    <!-- AI Vision Panel — redesigned -->
+    <!-- AI Vision Panel -->
     <div id="ai-panel">
 
       <!-- Header -->
@@ -641,7 +629,13 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
         </div>
       </div>
 
-      <!-- Reference images: REF 1 (upload) + REF 2 (snapshot) side by side, fully shown -->
+      <!-- Auto-scan indicator -->
+      <div class="aip-autoscan hidden" id="aip-autoscan-bar">
+        <div class="aip-autoscan-dot"></div>
+        <span>AUTO-SCAN ACTIVE — scans on connect</span>
+      </div>
+
+      <!-- Reference images -->
       <div class="aip-refs">
         <!-- REF 1 -->
         <div class="aip-ref-slot">
@@ -694,23 +688,18 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9998;
         </div>
       </div>
 
-      <!-- Decision log — compact scrollable -->
+      <!-- Decision log -->
       <div class="aip-log-wrap">
         <div class="aip-log-lbl">AI DECISION LOG</div>
         <div class="aip-log" id="aip-log"></div>
       </div>
 
-      <!-- Action strip -->
+      <!-- Action strip — SCAN button only, pump/lift buttons removed -->
       <div class="aip-actions">
         <button class="aip-scan-btn" id="aip-scan-btn" onclick="aiScan()" disabled>
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><circle cx="8" cy="8" r="6"/><circle cx="8" cy="8" r="2.5"/><line x1="8" y1="1" x2="8" y2="4"/><line x1="8" y1="12" x2="8" y2="15"/><line x1="1" y1="8" x2="4" y2="8"/><line x1="12" y1="8" x2="15" y2="8"/></svg>
           SCAN &amp; IDENTIFY PLANT
         </button>
-        <div class="aip-cmd-row">
-          <button class="aip-cmd-btn cg" onclick="aiExecCmd('pump','true')">💧 PUMP ON</button>
-          <button class="aip-cmd-btn ca" onclick="aiExecCmd('actuator','UP')">▲ LIFT</button>
-          <button class="aip-cmd-btn cr" onclick="aiExecCmd('pump','false')">✕ PUMP OFF</button>
-        </div>
         <div style="font-family:var(--mono);font-size:7px;color:var(--text3);text-align:center;letter-spacing:.07em">COMMANDS SENT TO ESP32 VIA FIREBASE</div>
       </div>
     </div><!-- /ai-panel -->
@@ -730,6 +719,9 @@ let sweepAng=90,radarPts=[],moistHist=[],sonicHist=[];
 let pumpOn=false,pumpSecs=0,pumpTimer=null;
 let espIP=null,camStarted=false,updateCount=0;
 let localMode='AUTO';
+
+// Auto-scan state
+let fsCamConnected=false;  // true once fullscreen stream loads successfully
 
 const SVG_AUTO='<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="2" y="4" width="12" height="8" rx="1.5"/><line x1="5" y1="4" x2="5" y2="2"/><line x1="8" y1="4" x2="8" y2="2"/><line x1="11" y1="4" x2="11" y2="2"/><circle cx="5" cy="8" r="1" fill="currentColor" stroke="none"/><circle cx="8" cy="8" r="1" fill="currentColor" stroke="none"/><circle cx="11" cy="8" r="1" fill="currentColor" stroke="none"/><line x1="5" y1="12" x2="5" y2="14"/><line x1="8" y1="12" x2="8" y2="14"/><line x1="11" y1="12" x2="11" y2="14"/></svg>';
 const SVG_MANUAL='<svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="5" width="14" height="8" rx="2"/><line x1="8" y1="5" x2="8" y2="2"/><circle cx="8" cy="2" r="1.2" fill="currentColor" stroke="none"/><line x1="4" y1="9" x2="4" y2="11"/><line x1="3" y1="10" x2="5" y2="10"/><circle cx="12" cy="10" r="1" fill="currentColor" stroke="none"/></svg>';
@@ -883,6 +875,7 @@ function startCam(ip){
   if(!ip)return;camStarted=true;
   const img=document.getElementById('cam-img');
   img.style.display='none';document.getElementById('cam-ph').style.display='flex';img.src='';
+  img.crossOrigin='anonymous';
   setTimeout(()=>{img.src='http://'+ip+'/stream?t='+Date.now();},300);
   document.getElementById('cam-url-lbl').textContent='http://'+ip+'/stream';
   document.getElementById('cam-stream-url').textContent='http://'+ip+'/stream';
@@ -903,6 +896,8 @@ function openFsCam(){
   const img=document.getElementById('fs-img');
   const ph=document.getElementById('fs-ph');
   img.style.display='none';ph.style.display='flex';img.src='';
+  fsCamConnected=false;
+  img.crossOrigin='anonymous';
   setTimeout(()=>{img.src=url+'?t='+Date.now();},200);
   img.onload=()=>{
     ph.style.display='none';img.style.display='block';
@@ -910,8 +905,15 @@ function openFsCam(){
     document.getElementById('aip-snap-btn').disabled=false;
     resizeSkelCanvas();
     startSkelAnimation();
+    fsCamConnected=true;
+    // ── AUTO-SCAN: trigger immediately if reference is ready ──
+    if(aiRefImageB64&&!aiScanning){
+      aipLog('Camera connected — auto-scan triggered','b');
+      slog('[AI] Auto-scan triggered on camera connect','g');
+      setTimeout(()=>aiScan(),600); // short delay so frame is stable
+    }
   };
-  img.onerror=()=>{slog('Fullscreen cam error — retrying…','a');setTimeout(()=>{if(document.getElementById('fs-modal').classList.contains('open'))img.src=url+'?t='+Date.now();},3000);};
+  img.onerror=()=>{slog('Fullscreen cam error — retrying…','a');setTimeout(()=>{if(document.getElementById('fs-modal').classList.contains('open')){img.crossOrigin='anonymous';img.src=url+'?t='+Date.now();}},3000);};
 }
 function closeFsCam(){
   document.getElementById('fs-modal').classList.remove('open');
@@ -920,6 +922,7 @@ function closeFsCam(){
   document.getElementById('fs-ph').style.display='flex';
   document.getElementById('fs-status-tag').textContent='STANDBY';
   document.getElementById('fs-status-tag').className='tag tn';
+  fsCamConnected=false;
   stopSkelAnimation();
   slog('Fullscreen cam closed','a');
 }
@@ -1006,33 +1009,26 @@ slog('Listening on /agribot/data … waiting for ESP32-S3-CAM','a');
 slog('Fields: moisture · distance · leftDistance · centerDistance · rightDistance · servoAngle · pump · actuator · movement · wateringNeeded · mode · ip','c');
 
 /* ══════════════════════════════════════════════
-   PLANT SKELETON OVERLAY — dots + lines
+   PLANT SKELETON OVERLAY
    ══════════════════════════════════════════════ */
-let skelMode='on';  // 'on' | 'ani' | 'off'
+let skelMode='on';
 let skelAnimFrame=null;
 let skelPhase=0;
 
-// Static plant skeleton joint layout (normalised 0-1 coords)
-// Resembles a typical plant: root → stem → branches → leaves
 const SKEL_JOINTS=[
   {id:'root',  x:.50, y:.92, label:'ROOT'},
   {id:'stem1', x:.50, y:.76, label:''},
   {id:'stem2', x:.50, y:.60, label:'STEM'},
   {id:'stem3', x:.50, y:.44, label:''},
   {id:'apex',  x:.50, y:.28, label:'APEX'},
-  // left branch
   {id:'lb1',   x:.38, y:.52, label:''},
   {id:'lb2',   x:.26, y:.44, label:'LEAF'},
-  // right branch
   {id:'rb1',   x:.62, y:.52, label:''},
   {id:'rb2',   x:.74, y:.44, label:'LEAF'},
-  // top left branch
   {id:'tlb1',  x:.40, y:.36, label:''},
   {id:'tlb2',  x:.30, y:.26, label:'LEAF'},
-  // top right branch
   {id:'trb1',  x:.60, y:.36, label:''},
   {id:'trb2',  x:.70, y:.26, label:'LEAF'},
-  // flower/bud at apex
   {id:'bud',   x:.50, y:.14, label:'BUD'},
 ];
 
@@ -1060,60 +1056,35 @@ function drawSkeleton(phase){
   const ctx=c.getContext('2d');
   ctx.clearRect(0,0,W,H);
   if(skelMode==='off')return;
-
-  // Resolve joint screen positions with optional sway animation
   const jmap={};
   SKEL_JOINTS.forEach(j=>{
     let ox=0,oy=0;
     if(skelMode==='ani'){
-      // gentle sway: top joints sway more
-      const depth=1-j.y; // 0 at bottom, 1 at top
+      const depth=1-j.y;
       ox=Math.sin(phase+j.y*3)*depth*0.018;
       oy=Math.cos(phase*0.7+j.x*2)*depth*0.008;
     }
     jmap[j.id]={x:(j.x+ox)*W, y:(j.y+oy)*H, label:j.label};
   });
-
-  // Draw bones
   ctx.lineWidth=1.5;
   SKEL_BONES.forEach(([a,b])=>{
     const ja=jmap[a],jb=jmap[b];
-    ctx.beginPath();
-    ctx.moveTo(ja.x,ja.y);
-    ctx.lineTo(jb.x,jb.y);
-    // gradient-like: green at bottom, cyan at top
+    ctx.beginPath();ctx.moveTo(ja.x,ja.y);ctx.lineTo(jb.x,jb.y);
     const grad=ctx.createLinearGradient(ja.x,ja.y,jb.x,jb.y);
-    grad.addColorStop(0,'rgba(0,230,118,0.65)');
-    grad.addColorStop(1,'rgba(0,229,255,0.55)');
-    ctx.strokeStyle=grad;
-    ctx.stroke();
+    grad.addColorStop(0,'rgba(0,230,118,0.65)');grad.addColorStop(1,'rgba(0,229,255,0.55)');
+    ctx.strokeStyle=grad;ctx.stroke();
   });
-
-  // Draw joints (dots)
   SKEL_JOINTS.forEach(j=>{
     const p=jmap[j.id];
     const isMain=['root','stem2','apex','bud'].includes(j.id);
     const isLeaf=j.label==='LEAF';
     const r=isMain?5:isLeaf?4:3;
-
-    // outer ring
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,r+2,0,Math.PI*2);
-    ctx.strokeStyle=isLeaf?'rgba(29,233,182,0.4)':'rgba(0,230,118,0.3)';
-    ctx.lineWidth=1;
-    ctx.stroke();
-
-    // dot fill
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,r,0,Math.PI*2);
-    ctx.fillStyle=isLeaf?'rgba(29,233,182,0.9)':'rgba(0,230,118,0.9)';
-    ctx.fill();
-
-    // label
+    ctx.beginPath();ctx.arc(p.x,p.y,r+2,0,Math.PI*2);
+    ctx.strokeStyle=isLeaf?'rgba(29,233,182,0.4)':'rgba(0,230,118,0.3)';ctx.lineWidth=1;ctx.stroke();
+    ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);
+    ctx.fillStyle=isLeaf?'rgba(29,233,182,0.9)':'rgba(0,230,118,0.9)';ctx.fill();
     if(j.label){
-      ctx.font='bold 8px JetBrains Mono,monospace';
-      ctx.fillStyle='rgba(0,230,118,0.85)';
-      ctx.textAlign='left';
+      ctx.font='bold 8px JetBrains Mono,monospace';ctx.fillStyle='rgba(0,230,118,0.85)';ctx.textAlign='left';
       const lx=p.x+(j.x<0.5?-(j.label.length*5+10):6);
       ctx.fillText(j.label,lx,p.y-6);
     }
@@ -1122,11 +1093,7 @@ function drawSkeleton(phase){
 
 function startSkelAnimation(){
   if(skelAnimFrame)cancelAnimationFrame(skelAnimFrame);
-  function frame(){
-    skelPhase+=0.025;
-    drawSkeleton(skelPhase);
-    skelAnimFrame=requestAnimationFrame(frame);
-  }
+  function frame(){skelPhase+=0.025;drawSkeleton(skelPhase);skelAnimFrame=requestAnimationFrame(frame);}
   frame();
 }
 function stopSkelAnimation(){
@@ -1137,10 +1104,7 @@ function stopSkelAnimation(){
 
 function setSkelMode(m){
   skelMode=m;
-  ['on','ani','off'].forEach(id=>{
-    const btn=document.getElementById('skel-'+id+'-btn');
-    if(btn)btn.classList.toggle('active',id===m);
-  });
+  ['on','ani','off'].forEach(id=>{const btn=document.getElementById('skel-'+id+'-btn');if(btn)btn.classList.toggle('active',id===m);});
   const topBtn=document.getElementById('skel-top-btn');
   if(topBtn){
     topBtn.textContent=m==='off'?'OFF':m==='ani'?'ANIM':'ON';
@@ -1149,18 +1113,12 @@ function setSkelMode(m){
     topBtn.style.color=m==='off'?'var(--text3)':m==='ani'?'var(--blue)':'var(--g)';
   }
   if(m==='off'){stopSkelAnimation();}
-  else if(m==='ani'){
-    if(!skelAnimFrame)startSkelAnimation();
-  } else {
-    stopSkelAnimation();
-    resizeSkelCanvas();
-    drawSkeleton(0);
-  }
+  else if(m==='ani'){if(!skelAnimFrame)startSkelAnimation();}
+  else{stopSkelAnimation();resizeSkelCanvas();drawSkeleton(0);}
 }
 function toggleSkeleton(){
   const modes=['on','ani','off'];
-  const next=modes[(modes.indexOf(skelMode)+1)%3];
-  setSkelMode(next);
+  setSkelMode(modes[(modes.indexOf(skelMode)+1)%3]);
 }
 
 /* ══════════════════════════════════════════════
@@ -1210,11 +1168,20 @@ function aiHandleFile(input,slot){
       img.src=dataUrl;img.style.display='block';
       if(ph)ph.style.display='none';
       const nm=document.getElementById('ref1-name');
-      if(nm){nm.textContent=file.name;}
+      if(nm)nm.textContent=file.name;
       document.getElementById('aip-scan-btn').disabled=false;
       aipSetBadge('analyzing','READY');
       aipSetStatus('Ref 1 loaded — press SCAN');
       aipLog('Ref 1 loaded: '+file.name,'c');
+      // show auto-scan indicator
+      const bar=document.getElementById('aip-autoscan-bar');
+      if(bar)bar.classList.remove('hidden');
+      // ── AUTO-SCAN: trigger immediately if cam already live ──
+      if(fsCamConnected&&!aiScanning){
+        aipLog('Reference loaded while cam is live — auto-scan triggered','b');
+        slog('[AI] Auto-scan triggered — ref loaded with cam live','g');
+        setTimeout(()=>aiScan(),400);
+      }
     }
     aipSetConf(0);
     document.getElementById('ai-cam-overlay').style.display='none';
@@ -1222,7 +1189,6 @@ function aiHandleFile(input,slot){
   reader.readAsDataURL(file);
 }
 
-/* Snapshot: capture current stream frame → REF 2 */
 async function aiSnapshot(){
   const btn=document.getElementById('aip-snap-btn');
   if(btn)btn.disabled=true;
@@ -1307,7 +1273,12 @@ async function aiScan(){
   try{
     const resp=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':'AIzaSyCnXwruGNbZ9jTszB7hqn1sfVWk9wWyoMI',
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-ipc':'true'
+      },
       body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content}]})
     });
     const data=await resp.json();
@@ -1358,8 +1329,6 @@ function aiHandleResult(r){
     slog('[AI] Plant not found ('+conf+'%) — '+r.decision,'a');
   }
 }
-
-function aiExecCmd(cmd,val){sendCmd(cmd,val);aipLog('Manual AI cmd → '+cmd+'='+val,'a');}
 </script>
 </body>
 </html>
